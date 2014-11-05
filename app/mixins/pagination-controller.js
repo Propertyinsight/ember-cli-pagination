@@ -10,11 +10,11 @@ export default Ember.Mixin.create({
     domain: null, // this must be defined by the consuming in class
 
     total: function() {
-        return this.store.metadataFor('user').paging.total;
+        return this.store.metadataFor(this.get('domain')).paging.total;
     }.property('model'),
 
     paging: function() {
-        return this.store.metadataFor('property').paging;
+        return this.store.metadataFor(this.get('domain')).paging;
     }.property('model'),
 
     timer: null,
