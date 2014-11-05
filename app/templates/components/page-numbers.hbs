@@ -1,0 +1,17 @@
+{{#if hasPrevious}}
+    <li>{{#link-to routeName (query-params page=previous)}}&laquo;{{/link-to}}</li>
+{{else}}
+    <li class="disabled"><span>&laquo;</span></li>
+{{/if}}
+{{#each block in blocks}}
+    {{#if block.link}}
+        <li {{bind-attr class="block.active:active" }}>{{#link-to routeName (query-params page=block.page)}}{{block.page}}{{/link-to}}</li>
+    {{else}}
+        <li class="disabled"><span>&#8230;</span></li>
+    {{/if}}
+{{/each}}
+{{#if hasNext}}
+    <li>{{#link-to routeName (query-params page=next)}}&raquo;{{/link-to}}</li>
+{{else}}
+    <li class="disabled"><span>&raquo;</span></li>
+{{/if}}

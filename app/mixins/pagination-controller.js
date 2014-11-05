@@ -1,0 +1,58 @@
+import Ember from 'ember';
+
+export default Ember.Mixin.create({
+
+    queryParams: ['q', 'page', 'pageSize'],
+    q: null,
+    page: 1,
+    pageSize: 10,
+
+    domain: null, // this must be defined by the consuming in class
+
+    paging: function() {
+        return this.store.metadataFor('property').paging;
+    }.property('model'),
+
+    timer: null,
+
+    isLoading: false,
+
+    filter: function () {
+
+        if (!this.get('domain'))
+            throw new Error('domain must be defined.');
+
+        Ember.run.cancel(this.timer);
+
+        this.set('isLoading', true);
+
+        this.store.find(this.get('domain'), { q: this.get('q'), page: this.get('page'), page_size: this.get('pageSize') }).then(function(data){
+            this.set('model', data);
+            this.set('isLoading', false);
+        }.bind(this), function (error) {
+            this.set('isLoading', false);
+
+            if (error.status === 401)
+                this.send('error', error);
+            else
+                this.session.showGlobalAlert(error, 6000, 'danger');
+        }.bind(this));
+    },
+
+    onPageChange: function() {
+        this.filter();
+    }.observes('page'),
+
+    onQChange: function(){
+        this.set('isLoading', true);
+        Ember.run.cancel(this.timer);
+        this.timer = Ember.run.later(this, this.filter, 500);
+    }.observes('q'),
+
+    actions: {
+        pageTo: function(page) {
+            this.set('page', page);
+        }
+    }
+
+});
