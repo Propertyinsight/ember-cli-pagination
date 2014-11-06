@@ -4,11 +4,11 @@ export default Ember.Mixin.create({
 
     fetched: false,
 
-    queryParams: {
-        q: {
-            replace: true
-        }
-    },
+    //queryParams: {
+    //    q: {
+    //        replace: true
+    //    }
+    //},
 
     setupController: function(controller, model) {
         this._super(controller, model);
