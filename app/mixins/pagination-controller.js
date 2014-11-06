@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
 
     queryParams: ['q', 'page', 'pageSize'],
-    q: null,
+    q: '',
     page: 1,
     pageSize: 10,
 
