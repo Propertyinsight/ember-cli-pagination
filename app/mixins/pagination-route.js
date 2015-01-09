@@ -10,6 +10,10 @@ export default Ember.Mixin.create({
         }
     },
 
+    model: function() {
+        return [];
+    },
+
     setupController: function(controller, model) {
         this._super(controller, model);
 
