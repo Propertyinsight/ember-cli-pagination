@@ -37,12 +37,12 @@ export default Ember.Mixin.create({
         // Prevent double querying if parameter hasn't changed.
         // This double querying typically happens when route calls controller.filter(), 
         // while a query param change is also triggered at the same time.
-        if (this.get('activeQuery') === currentQuery())
+        if (this.get('activeQuery') === this.currentQuery())
             return;
 
         Ember.run.cancel(this.timer);
 
-        this.set('activeQuery', currentQuery());
+        this.set('activeQuery', this.currentQuery());
 
         this.set('isLoading', true);
         
