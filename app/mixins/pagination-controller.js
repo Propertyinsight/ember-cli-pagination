@@ -9,6 +9,14 @@ export default Ember.Mixin.create({
 
     domain: null, // this must be defined by the consuming class
 
+    activeQuery: null,
+    currentQuery: function() {
+        return JSON.stringify({
+            q: this.get('q'),
+            page: this.get('page')
+        });
+    },
+
     total: function() {
         return this.store.metadataFor(this.get('domain')).paging ? this.store.metadataFor(this.get('domain')).paging.total : null;
     }.property('model'),
@@ -26,10 +34,18 @@ export default Ember.Mixin.create({
         if (!this.get('domain'))
             throw new Error('domain must be defined.');
 
+        // Prevent double querying if parameter hasn't changed.
+        // This double querying typically happens when route calls controller.filter(), 
+        // while a query param change is also triggered at the same time.
+        if (this.get('activeQuery') === currentQuery())
+            return;
+
         Ember.run.cancel(this.timer);
 
-        this.set('isLoading', true);
+        this.set('activeQuery', currentQuery());
 
+        this.set('isLoading', true);
+        
         this.store.find(this.get('domain'), { q: this.get('q'), page: this.get('page'), page_size: this.get('pageSize') }).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
