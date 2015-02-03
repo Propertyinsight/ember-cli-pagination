@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
     page: 1,
     pageSize: 10,
 
-    domain: null, // this must be defined by the consuming in class
+    domain: null, // this must be defined by the consuming class
 
     total: function() {
         return this.store.metadataFor(this.get('domain')).paging ? this.store.metadataFor(this.get('domain')).paging.total : null;
