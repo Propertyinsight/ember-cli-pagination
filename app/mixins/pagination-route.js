@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
     },
 
     setupController: function(controller, model) {
-        this._super(controller, model);
+        this._super.apply(this, arguments);
         controller.filter();
     }
 
