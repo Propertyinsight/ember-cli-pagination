@@ -4,7 +4,7 @@ export default Ember.Component.extend({
 
     tagName: 'ul',
 
-    classNames: ['pagination', 'pull-right'],
+    classNames: ['pagination', 'width-100'],
 
     page: function () {
         return this.get('paging') ? this.get('paging').page : null;
