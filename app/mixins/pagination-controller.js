@@ -30,7 +30,12 @@ export default Ember.Mixin.create({
 
         this.set('isLoading', true);
         
-        this.store.find(this.get('domain'), { q: this.get('q'), page: this.get('page'), page_size: this.get('pageSize') }).then(function(data){
+        var params = {};
+        this.get('queryParams').forEach(function(param){
+          params[param] = this.get(param);
+        }, this);
+        
+        this.store.find(this.get('domain'), params).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
         }.bind(this), function (error) {
