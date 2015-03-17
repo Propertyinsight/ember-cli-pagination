@@ -8,14 +8,14 @@ export default Ember.Mixin.create({
     page: 1,
     pageSize: 10,
 
-    domain: null, // this must be defined by the consuming class
+    modelName: null, // this must be defined by the consuming class
 
     total: function() {
-        return this.store.metadataFor(this.get('domain')).paging ? this.store.metadataFor(this.get('domain')).paging.total : null;
+        return this.store.metadataFor(this.get('modelName')).paging ? this.store.metadataFor(this.get('modelName')).paging.total : null;
     }.property('model'),
 
     paging: function() {
-        return this.store.metadataFor(this.get('domain')).paging;
+        return this.store.metadataFor(this.get('modelName')).paging;
     }.property('model'),
 
     timer: null,
@@ -24,8 +24,8 @@ export default Ember.Mixin.create({
 
     filter: function () {
 
-        if (!this.get('domain'))
-            throw new Error('domain must be defined.');
+        if (!this.get('modelName'))
+            throw new Error('modelName must be defined.');
 
         Ember.run.cancel(this.timer);
 
@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
           params[param.underscore()] = this.get(param);
         }, this);
 
-        this.store.find(this.get('domain'), params).then(function(data){
+        this.store.find(this.get('modelName'), params).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
         }.bind(this), function (error) {
