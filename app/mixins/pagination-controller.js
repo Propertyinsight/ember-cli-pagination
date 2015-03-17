@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
 
+    calculatedQueryParams: [],
     queryParams: ['q', 'page', 'pageSize'],
     q: '',
     page: 1,
@@ -32,6 +33,12 @@ export default Ember.Mixin.create({
         
         var params = {};
         this.get('queryParams').forEach(function(param){
+          params[param.underscore()] = this.get(param);
+        }, this);
+
+        // if we want to use calculated query params, we need to store them in a separate property
+        // otherwise they get wiped out.
+        this.get('calculatedQueryParams').forEach(function(param){
           params[param.underscore()] = this.get(param);
         }, this);
 
