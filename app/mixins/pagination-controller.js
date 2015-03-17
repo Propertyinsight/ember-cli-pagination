@@ -32,9 +32,9 @@ export default Ember.Mixin.create({
         
         var params = {};
         this.get('queryParams').forEach(function(param){
-          params[param] = this.get(param);
+          params[param.underscore()] = this.get(param);
         }, this);
-        
+
         this.store.find(this.get('domain'), params).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
