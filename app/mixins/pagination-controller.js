@@ -30,7 +30,7 @@ export default Ember.Mixin.create({
         Ember.run.cancel(this.timer);
 
         this.set('isLoading', true);
-        
+
         var params = {};
         this.get('queryParams').forEach(function(param){
           params[param.underscore()] = this.get(param);
@@ -62,8 +62,15 @@ export default Ember.Mixin.create({
     onQChange: function(){
         this.set('isLoading', true);
         Ember.run.cancel(this.timer);
-        this.timer = Ember.run.later(this, this.filter, 500);
+        this.timer = Ember.run.later(this, this.resetPageAndFilter, 500);
     }.observes('q'),
+
+    resetPageAndFilter: function(){
+        if (this.get('page') === 1)
+            this.filter();
+        else
+            this.set('page', 1);
+    },
 
     actions: {
         pageTo: function(page) {
