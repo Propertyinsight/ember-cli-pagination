@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
           params[param.underscore()] = this.get(param);
         }, this);
 
-        this.store.find(this.get('modelName'), params).then(function(data){
+        this.store.query(this.get('modelName'), params).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
         }.bind(this), function (error) {
