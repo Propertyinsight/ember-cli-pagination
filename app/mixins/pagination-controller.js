@@ -7,16 +7,10 @@ export default Ember.Mixin.create({
     q: '',
     page: 1,
     pageSize: 10,
+    paging: Ember.computed.alias('model.meta.paging'),
+    total: Ember.computed.alias('model.meta.paging.total'),
 
     modelName: null, // this must be defined by the consuming class
-
-    total: function() {
-        return this.store.metadataFor(this.get('modelName')).paging ? this.store.metadataFor(this.get('modelName')).paging.total : null;
-    }.property('model'),
-
-    paging: function() {
-        return this.store.metadataFor(this.get('modelName')).paging;
-    }.property('model'),
 
     timer: null,
 
@@ -42,7 +36,7 @@ export default Ember.Mixin.create({
           params[param.underscore()] = this.get(param);
         }, this);
 
-        this.store.find(this.get('modelName'), params).then(function(data){
+        this.store.query(this.get('modelName'), params).then(function(data){
             this.set('model', data);
             this.set('isLoading', false);
         }.bind(this), function (error) {
